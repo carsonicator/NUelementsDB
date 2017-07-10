@@ -4,9 +4,10 @@ This is a project folder for data munging/analysis scripts related to NU's Sympl
 
 ## SQL Query to generate data for _reshape_pub_source_ids.r_
 
-### All Cancer Center pubs from 2012 - present
-
 ```SQL
+
+-- All Cancer Center pubs from 2012 - present
+
 use [Elements-reporting2]
 
 SELECT pu.[User ID], g.name, pr.[Publication ID], doi, [Data Source], [Data Source Proprietary ID]
