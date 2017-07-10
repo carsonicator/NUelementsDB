@@ -6,7 +6,7 @@ This is a project folder for data munging/analysis scripts related to NU's Sympl
 
 ### All Cancer Center pubs from 2012 - present
 
-``` {SQL}
+```SQL
 use [Elements-reporting2]
 
 SELECT pu.[User ID], g.name, pr.[Publication ID], doi, [Data Source], [Data Source Proprietary ID]
