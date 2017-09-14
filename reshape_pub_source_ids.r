@@ -1,6 +1,7 @@
 #### name: reshape_pub_source_ids.r
 ###  author: Matt Carson
 ##   creation date: 2017-6-13
+#    last update: 2017-9-14
 # 
 # This script is for reshaping a list of Publication IDs and associated Proprietary IDs from literature databases from:
 # 
@@ -28,46 +29,50 @@
 library(reshape2)
 library(dplyr) # just for glimpse
 
-# Import .csv file from Elements reporting database
-long_df <- read.csv("file.csv", header=TRUE)
+# Define file and directory names
+WORKING_DIR = "dir_name"
+INPUT_FILE = "input.csv"
+OUTPUT_FILE = "reshaped_file.csv"
+
+setwd(WORKING_DIR)
+
+# Import .csv file generated from Elements reporting database
+publications <- read.csv(INPUT_FILE, header=TRUE)
 
 # Change ID to factor for summary
-long_df$Publication.ID <- as.factor(long_df$Publication.ID)
-long_df$User.ID <-as.factor(long_df$User.ID)
+publications$Publication.ID <- as.factor(publications$Publication.ID)
+                  
+# Examine and summarize the data frame using one or more of these:                 
+class(publications)
+dim(publications)
+names(publications)
+str(publications)
+glimpse(publications)
+summary(publications)
 
-# Examine and summarize the data frame                    
-class(long_df)
-dim(long_df)
-names(long_df)
-str(long_df)
-glimpse(long_df)
-summary(long_df)
-
-# Get rid of ID and group name columns (we don't need them in the reshaped file)
-long_df$User.ID <- NULL
-long_df$name <- NULL
-long_df$doi <- NULL
+# Create a df for reshaping
+long_df <- data.frame(publications$Publication.ID,publications$Data.Source.Proprietary.ID, publications$Data.Source)
 
 # Remove duplicate records
 long_df_dedup <- unique(long_df)
 
 # Reshape the long data frame to create a column for each Proprietary.ID type
-wide_df_dedup <- reshape(long_df_dedup, direction = "wide", idvar = "Publication.ID", timevar= "Data.Source", v.names = "Data.Source.Proprietary.ID")
+wide_df_dedup <- reshape(long_df_dedup, direction = "wide", idvar = "publications.Publication.ID", timevar= "publications.Data.Source", v.names = "publications.Data.Source.Proprietary.ID")
 
-# If there are any Publication IDs with more than one instance of the same source ID (e.g., more than one Scopus ID),
+# If there are any Publication IDs with more than one instance of the same source ID (e.g., more than one Scopus or Web of Science ID),
 # the reshape command above will send a warning like this...
 #
 # Warning message:
 #	In reshapeWide(data, idvar = idvar, timevar = timevar, varying = varying,  :
 #	multiple rows match for Data.Source=Scopus: first taken
 #
-# We can identify and count the number of Pub IDs as follows...
+# We can identify and count the number of Pub IDs with duplicatesas follows, changing 'Scopus' to whatever proprietary ID you want to examine...
 
 # Create a new df with only Scopus IDs
-long_df_scopus <- long_df_dedup[ which(long_df_dedup$Data.Source =='Scopus'), ]
+long_df_scopus <- long_df_dedup[ which(long_df_dedup$publications.Data.Source =='Scopus'), ]
 
 # List of Publication.IDs and the number of times they occurred in the Scopus list
-long_df_scopus_duplicated <- data.frame(table(long_df_scopus$Publication.ID))
+long_df_scopus_duplicated <- data.frame(table(long_df_scopus$publications.Publication.ID))
 
 # List of Publication IDs that have more than one Scopus ID
 long_df_scopus_dup_count <- long_df_scopus_duplicated[long_df_scopus_duplicated$Freq > 1,]
@@ -76,7 +81,13 @@ long_df_scopus_dup_count <- long_df_scopus_duplicated[long_df_scopus_duplicated$
 long_df_scopus_dup_count_sorted <- long_df_scopus_dup_count[with(long_df_scopus_dup_count, order(-Freq, Var1)), ]
 
 # List of records with more than one Scopus ID
-long_df_scopus_dup_IDs <- long_df_scopus[long_df_scopus$Publication.ID %in% long_df_scopus_dup_count$Var1[long_df_scopus_dup_count$Freq > 1],]
+long_df_scopus_dup_IDs <- long_df_scopus[long_df_scopus$publications.Publication.ID %in% long_df_scopus_dup_count$Var1[long_df_scopus_dup_count$Freq > 1],]
+
+
+# Rename the columns for readability
+#
+# Make sure the column order is correct before running
+names(wide_df_dedup) = c("Pub_ID", "PubMed", "Europe PubMed Central", "Scopus",	"Web of Science", "Crossref", "Web of Science (Lite)", "SSRN", "RePEc", "DBLP")
 
 # Export reshaped file as .csv
-write.csv(wide_df_dedup, file = "reshaped_file.csv", row.names = FALSE)
+write.csv(wide_df_dedup, file = OUTPUT_FILE, row.names = FALSE)
