@@ -37,7 +37,7 @@ ORDER BY u.[Last Name]
 ```
 
 ## Querying for authors pubs when authors are in at least one of three groups
-# Also includes Scopus Author ID and Employee_ID
+### Also includes Scopus Author ID and Employee_ID
 ```SQL
 
 -- NOTE: Pubs may have duplicate publication dates, DOIs, and proprietary IDs (Scopus, WOS, etc.)
