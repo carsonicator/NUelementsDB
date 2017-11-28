@@ -52,9 +52,9 @@ INPUT_FILE <- opts$i
 OUTPUT_FILE <- opts$o
 
 # If you want to run in RStudio...
-#WORKING_DIR = "dir_name"
-#INPUT_FILE = "input.csv"
-#OUTPUT_FILE = "reshaped_file.csv"
+#WORKING_DIR <- "dir_name"
+#INPUT_FILE <- "input.csv"
+#OUTPUT_FILE <- "reshaped_file.csv"
 
 # Load libraries
 library(reshape2)
