@@ -92,8 +92,8 @@ long_df <- data.frame("Group_Name" = publications$Group.Name,
 long_df_dedup <- unique(long_df)
 
 # Reshape the long data frame to create a column for each "Data_Source_Proprietary_ID" type
-# By setting idvar = c("Group_Name", "NetID", "Pub_ID") instead of just "Pub_ID", reshape doesn't deduplicate pubs. It will include each researchers full list of pubs,
-# even if multiple researchers in the file are authors of the same pub.
+# By setting idvar = c("Group_Name", "NetID", "Pub_ID") instead of just "Pub_ID", reshape doesn't deduplicate pubs. It will include each researchers full list of pubs
+# whether or not multiple researchers in the file are authors of the same pub or a researcher belongs to multiple groups.
 wide_df_dedup <- reshape(long_df_dedup, direction = "wide", idvar = c("Group_Name", "NetID", "Pub_ID"), timevar= "Data_Source", v.names = "Data_Source_Proprietary_ID")
 
 # If there are any Publication IDs with more than one instance of the same source ID (e.g., more than one Scopus or Web of Science ID),
