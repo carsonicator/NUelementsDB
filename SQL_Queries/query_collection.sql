@@ -107,3 +107,19 @@ WHERE pr.[publication-date] > 20170901 AND pr.[publication-date] <= 20180831
 GROUP BY g.name, u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
 HAVING g.name = 'DPM_20180905_NetID'
 ORDER BY u.[Last Name]
+
+
+-- Database query, all pubs, no date limit
+use [Elements-reporting2]
+
+SELECT u.[First Name], u.[Department], u.Username as "NetID", u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+FROM [dbo].[Publication Record] as pr
+join [dbo].[Publication User Relationship] as pu on pr.[Publication ID] = pu.[Publication ID]
+join [dbo].[Group User Membership] as gu on gu.[User ID] = pu.[User ID]
+join [dbo].[User] as u on u.[ID] = pu.[User ID]
+join [dbo].[User Identifier Association] as uia on uia.[User ID] = u.[ID]
+join [dbo].[Identifier Scheme] as idsch on idsch.ID = uia.[Identifier Scheme ID]
+join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
+WHERE u.[Department] like 'Pediatrics%'
+GROUP BY u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+ORDER BY u.[Last Name]
