@@ -33,6 +33,8 @@ ORDER BY u.[Last Name]
 -- Also includes Scopus Author ID and Employee_ID
 -- NOTE: Pubs may have duplicate publication dates, DOIs, and proprietary IDs (Scopus, WOS, etc.)
 
+use [Elements-reporting2]
+
 SELECT g.name as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username, uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
 FROM [dbo].[Publication Record] as pr
 join [dbo].[Publication User Relationship] as pu on pr.[Publication ID] = pu.[Publication ID]
@@ -44,4 +46,64 @@ join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
 WHERE pr.[publication-date] > 20130101 AND pr.[publication-date] <= 20171231 AND g.name = 'FAM_COM_MED_FY2018'
    OR pr.[publication-date] > 20130101 AND pr.[publication-date] <= 20171231 AND g.name = 'RADIOLOGY_FY2018'
    OR pr.[publication-date] > 20130101 AND pr.[publication-date] <= 20171231 AND g.name = 'SURGERY_FY2018'
+ORDER BY u.[Last Name]
+
+--------------------------
+
+/* Publication Dates: 2014 – 2018
+* Non-de-duplicated: We’d like each person to have their own list of publications (i.e. non-de-duplicated publication list), with the person’s name or other identifying information in a column next to their publication.
+* IDs: We’d like all possible article IDs in separate columns by database (i.e. PubMed ID, Scopus ID, DOI, WoS, etc.)
+*/
+
+use [Elements-reporting2]
+
+SELECT g.[name] as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username as "NetID", u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+FROM [dbo].[Publication Record] as pr
+join [dbo].[Publication User Relationship] as pu on pr.[Publication ID] = pu.[Publication ID]
+join [dbo].[Group User Membership] as gu on gu.[User ID] = pu.[User ID]
+join [dbo].[User] as u on u.[ID] = pu.[User ID]
+join [dbo].[User Identifier Association] as uia on uia.[User ID] = u.[ID]
+join [dbo].[Identifier Scheme] as idsch on idsch.ID = uia.[Identifier Scheme ID]
+join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
+WHERE pr.[publication-date] > 20140101 AND pr.[publication-date] <= 20181231
+GROUP BY g.name, u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+HAVING g.name = 'CCCR_2018'
+ORDER BY u.[Last Name]
+
+--------------------------
+
+-- Database query, all pubs
+
+use [Elements-reporting2]
+
+SELECT g.[name] as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username as "NetID", u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+FROM [dbo].[Publication Record] as pr
+join [dbo].[Publication User Relationship] as pu on pr.[Publication ID] = pu.[Publication ID]
+join [dbo].[Group User Membership] as gu on gu.[User ID] = pu.[User ID]
+join [dbo].[User] as u on u.[ID] = pu.[User ID]
+join [dbo].[User Identifier Association] as uia on uia.[User ID] = u.[ID]
+join [dbo].[Identifier Scheme] as idsch on idsch.ID = uia.[Identifier Scheme ID]
+join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
+WHERE pr.[publication-date] > 20160101 AND pr.[publication-date] <= 20181231
+GROUP BY g.name, u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+HAVING g.name = 'GIM_Ger_2016-2018'
+ORDER BY u.[Last Name]
+
+--------------------------
+
+-- Database query, all pubs
+
+use [Elements-reporting2]
+
+SELECT g.[name] as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username as "NetID", u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+FROM [dbo].[Publication Record] as pr
+join [dbo].[Publication User Relationship] as pu on pr.[Publication ID] = pu.[Publication ID]
+join [dbo].[Group User Membership] as gu on gu.[User ID] = pu.[User ID]
+join [dbo].[User] as u on u.[ID] = pu.[User ID]
+join [dbo].[User Identifier Association] as uia on uia.[User ID] = u.[ID]
+join [dbo].[Identifier Scheme] as idsch on idsch.ID = uia.[Identifier Scheme ID]
+join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
+WHERE pr.[publication-date] > 20170901 AND pr.[publication-date] <= 20180831
+GROUP BY g.name, u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
+HAVING g.name = 'DPM_20180905_NetID'
 ORDER BY u.[Last Name]
