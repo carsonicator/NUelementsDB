@@ -170,3 +170,76 @@ ORDER BY
         "Author_ID_Scheme",
         "Author_ID"
 ;
+
+
+// Returns all publications within a date range for researchers in group 'group_name'. Further comments on the 'Reporting Date 1' field needed.
+
+use [Elements-reporting2]
+
+SELECT  g.[Name] AS "Group Name",
+        u.[Last Name],
+        u.[First Name],
+        u.[Department],
+        u.[Username] AS "NetID",
+        u.[Proprietary ID] AS "Employee_ID",
+        idsch.[Name] AS "Author_ID_Scheme",
+        uia.[Identifier Value] AS "Author_ID",
+        pr.[Publication ID],
+        pr.[publication-date],
+        pr.[doi],
+        pr.[Data Source],
+        pr.[Data Source Proprietary ID],
+        pr.[title],
+        pr.[abstract],
+        pr.[authors],
+        pr.[issue],
+        pr.[journal],
+        pr.[volume],
+        pr.[types]
+FROM    -- start with Groups
+        [dbo].[Group] AS g
+        -- get Users who are members of each group
+        JOIN [dbo].[Group User Membership] AS gu
+           ON gu.[Group ID] = g.[ID]
+        -- get the publications linked to each user
+        JOIN [dbo].[Publication User Relationship] AS pur
+            ON pur.[User ID] = gu.[User ID]
+        JOIN [dbo].[Publication] p
+            ON p.[ID] = pur.[Publication ID]
+        -- get all records for each publication
+        JOIN [dbo].[Publication Record] AS pr
+            ON pr.[Publication ID] = p.[ID]
+        -- get each user's HR data
+        JOIN [dbo].[User] AS u
+            ON u.[ID] = pur.[User ID]
+        -- get each user's registered identifier data
+        JOIN [dbo].[User Identifier Association] AS uia
+            ON uia.[User ID] = u.[ID]
+        JOIN [dbo].[Identifier Scheme] AS idsch
+            ON idsch.ID = uia.[Identifier Scheme ID]
+WHERE   -- restrict to the group(s) of interest
+        g.[name] = 'group_name'
+        -- restrict to the time range of interest, using the Publication object's Reporting Date 1. Include publications with no Reporting Date 1
+        AND ( (p.[Reporting Date 1] > YYYYMMDD AND p.[Reporting Date 1] <= YYYYMMDD ) OR (pr.[publication-date] > YYYYMMDD AND pr.[publication-date] <= YYYYMMDD) OR p.[Reporting Date 1] IS NULL )
+ORDER BY
+        "Group Name",
+        "Last Name",
+        "First Name",
+        "Department",
+        "NetID",
+        "Employee_ID",
+        "Author_ID_Scheme",
+        "Author_ID",
+        "Publication ID",
+        "publication-date",
+        "doi",
+        "Data Source",
+        "Data Source Proprietary ID",
+        "title",
+        "abstract",
+        "authors",
+        "issue",
+        "journal",
+        "volume",
+        "types"
+;
