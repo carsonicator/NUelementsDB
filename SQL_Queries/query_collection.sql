@@ -124,14 +124,14 @@ WHERE u.[Department] like 'Pediatrics%'
 GROUP BY u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
 ORDER BY u.[Last Name]
 
-// Is a paper with this DOI in the database?
+-- Is a paper with this DOI in the database?
 
 use [Elements-reporting2]
 SELECT *
 FROM [dbo].[Publication Record] as pr
 WHERE pr.[doi] = 'doi_name_1' OR pr.[doi] = 'doi_name_2' OR ...
 
-// How do I return a list of all users in a group that have a [Scopus, ORCID, WOS] author ID?
+-- How do I return a list of all users in a group that have a [Scopus, ORCID, WOS] author ID?
 
 use [Elements-reporting2]
 
@@ -172,7 +172,7 @@ ORDER BY
 ;
 
 
-// Returns all publications within a date range for researchers in group 'group_name'. Further comments on the 'Reporting Date 1' field needed.
+-- Returns all publications within a date range for researchers in group 'group_name'. Further comments on the 'Reporting Date 1' field needed.
 
 use [Elements-reporting2]
 
