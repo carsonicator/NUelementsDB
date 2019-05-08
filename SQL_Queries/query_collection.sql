@@ -123,3 +123,50 @@ join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
 WHERE u.[Department] like 'Pediatrics%'
 GROUP BY u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
 ORDER BY u.[Last Name]
+
+// Is a paper with this DOI in the database?
+
+use [Elements-reporting2]
+SELECT *
+FROM [dbo].[Publication Record] as pr
+WHERE pr.[doi] = 'doi_name_1' OR pr.[doi] = 'doi_name_2' OR ...
+
+// How do I return a list of all users in a group that have a [Scopus, ORCID, WOS] author ID?
+
+use [Elements-reporting2]
+
+SELECT  DISTINCT g.[Name] AS "Group Name",
+        u.[Last Name],
+        u.[First Name],
+        u.[Department],
+        u.[Username] AS "NetID",
+        u.[Proprietary ID] AS "Employee_ID",
+        idsch.[Name] AS "Author_ID_Scheme",
+        uia.[Identifier Value] AS "Author_ID"
+        
+FROM    [dbo].[Group] AS g
+        -- get Users who are members of each group
+        JOIN [dbo].[Group User Membership] AS gu
+            ON gu.[Group ID] = g.[ID]
+        JOIN [dbo].[Publication User Relationship] AS pur
+            ON pur.[User ID] = gu.[User ID]
+        -- get each user's HR data
+        JOIN [dbo].[User] AS u
+            ON u.[ID] = pur.[User ID]
+        -- get each user's registered identifier data
+        JOIN [dbo].[User Identifier Association] AS uia
+            ON uia.[User ID] = u.[ID]
+        JOIN [dbo].[Identifier Scheme] AS idsch
+            ON idsch.ID = uia.[Identifier Scheme ID]
+WHERE   -- restrict to the group(s) of interest
+        g.[name] = 'group_name' AND idsch.[Name] = 'scopus-author-id'
+ORDER BY
+        "Group Name",
+        "Last Name",
+        "First Name",
+        "Department",
+        "NetID",
+        "Employee_ID",
+        "Author_ID_Scheme",
+        "Author_ID"
+;
