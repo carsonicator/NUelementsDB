@@ -1,6 +1,6 @@
 # NUelementsDB
 
-This repository is for collection, cleaning, and analysis scripts used to get data from the reporting database for [Northwestern University's instance](https://elements.northwestern.edu) of [Symplectic Elements](https://symplectic.co.uk/products/elements-3/0), a research information management system. Elements uses SQL ServerThe R script _reshape_pub_source_ids.r_ is used to tidy data extracted from the database to make it easier to process.
+This repository is for collection, cleaning, and analysis scripts used with data from the reporting database for [Northwestern University's instance](https://elements.northwestern.edu) of [Symplectic Elements](https://symplectic.co.uk/products/elements-3/0), a research information management system. Elements uses SQL ServerThe R script _reshape_pub_source_ids.r_ is used to tidy data extracted from the database to make it easier to process.
 
 ## Some example T-SQL query templates for input to _reshape_pub_source_ids.r_
 
