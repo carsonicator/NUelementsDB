@@ -86,7 +86,6 @@ ORDER BY pr.[Publication ID]
 
 -- A similar query with additional author and publication information
 -- NOTE: Pubs may have duplicate publication dates, DOIs, and proprietary IDs (Scopus, ORCID, WOS, etc.)
-
 use [Elements-reporting2]
 
 SELECT u.[Last Name], u.[First Name], u.[Username], u.Department, g.name, pr.[Publication ID], pr.[publication-date], pr.[authors], pr.[title], pr.[journal], pr.[publication-status], pr.[types], pr.[external-identifiers], pr.[doi], pr.[Data Source Proprietary ID], pr.[Data Source]
@@ -98,12 +97,9 @@ join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
 WHERE [publication-date] > YYYYMMDD AND [publication-date] <= YYYYMMDD AND g.name = 'group_name'
 ORDER BY u.[Last Name]
 
----------------------------
-
 -- Querying for authors pubs when authors are in at least one of three groups
 -- Also includes Scopus Author ID and Employee_ID
 -- NOTE: Pubs may have duplicate publication dates, DOIs, and proprietary IDs (Scopus, ORCID, WOS, etc.)
-
 use [Elements-reporting2]
 
 SELECT g.name as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username, uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
@@ -119,13 +115,11 @@ WHERE pr.[publication-date] > YYYYMMDD AND pr.[publication-date] <= YYYYMMDD AND
    OR pr.[publication-date] > YYYYMMDD AND pr.[publication-date] <= YYYYMMDD AND g.name = 'group_name_3'
 ORDER BY u.[Last Name]
 
---------------------------
 
 /* Publication Dates: 2014 – 2018
 * Non-de-duplicated: We’d like each person to have their own list of publications (i.e. non-de-duplicated publication list), with the person’s name or other identifying information in a column next to their publication.
 * IDs: We’d like all possible article IDs in separate columns by database (i.e. PubMed ID, Scopus ID, DOI, WoS, etc.)
 */
-
 use [Elements-reporting2]
 
 SELECT g.[name] as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username as "NetID", u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
@@ -141,10 +135,8 @@ GROUP BY g.name, u.[Last Name], u.[First Name], u.[Department], u.Username, u.[P
 HAVING g.name = 'CCCR_2018'
 ORDER BY u.[Last Name]
 
---------------------------
 
 -- Database query, all pubs
-
 use [Elements-reporting2]
 
 SELECT g.[name] as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username as "NetID", u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
@@ -160,10 +152,8 @@ GROUP BY g.name, u.[Last Name], u.[First Name], u.[Department], u.Username, u.[P
 HAVING g.name = 'GIM_Ger_2016-2018'
 ORDER BY u.[Last Name]
 
---------------------------
 
 -- Database query, all pubs
-
 use [Elements-reporting2]
 
 SELECT g.[name] as "Group Name", u.[Last Name], u.[First Name], u.[Department], u.Username as "NetID", u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Scopus AU-ID", pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
@@ -194,10 +184,6 @@ join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
 WHERE u.[Department] like 'Pediatrics%'
 GROUP BY u.[Last Name], u.[First Name], u.[Department], u.Username, u.[Proprietary ID], uia.[Identifier Value], pr.[Publication ID], pr.[publication-date], doi, pr.[Data Source], pr.[Data Source Proprietary ID]
 ORDER BY u.[Last Name]
-
-
-
-
 
 
 -- Returns all publications within a date range for researchers in group 'group_name'. Further comments on the 'Reporting Date 1' field needed.
