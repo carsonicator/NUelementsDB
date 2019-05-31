@@ -1,4 +1,4 @@
--- How do I get a list of all users?
+-- How do I get a list of all users in alphabetical order by last name?
 SELECT  u.[Last Name],
         u.[First Name],
         u.[Department],
@@ -6,7 +6,7 @@ SELECT  u.[Last Name],
         u.[Proprietary ID] AS "Employee_ID",
         u.[Position]
 FROM dbo.[User] as u
-
+ORDER BY u.[Last Name]
 
 -- How do I get a list of all employee position titles and the number of people who hold each, ordered from most to least?
 SELECT u.[Position], count(u.[Username]) as Position_Count
