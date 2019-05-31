@@ -1,3 +1,20 @@
+-- How do I get a list of all users?
+SELECT  u.[Last Name],
+        u.[First Name],
+        u.[Department],
+        u.[Username] AS "NetID",
+        u.[Proprietary ID] AS "Employee_ID",
+		u.[Position]
+FROM dbo.[User] as u
+
+-- How do I get a list of all employee position titles and the number of people who hold each, ordered from most to least? 
+SELECT  u.[Last Name],
+        u.[First Name],
+        u.[Department],
+        u.[Username] AS "NetID",
+        u.[Proprietary ID] AS "Employee_ID",
+		u.[Position]
+FROM dbo.[User] as u
 
 -- How do I get a list of all member of a group?
 use [Elements-reporting2]
