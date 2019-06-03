@@ -8,6 +8,7 @@ SELECT  u.[Last Name],
 FROM dbo.[User] as u
 ORDER BY u.[Last Name]
 
+
 -- How do I get a list of all employee position titles and the number of people who hold each, ordered from most to least?
 SELECT u.[Position], count(u.[Username]) as Position_Count
 FROM dbo.[User] as u
@@ -39,6 +40,39 @@ JOIN dbo.[Group] as g
 join dbo.[User] as u
 	on u.[ID] = gu.[User ID]
 WHERE  g.Name= 'group_name'
+
+
+-- How do I get a list of all members of a group who have one or more Scopus Author IDs?
+use [Elements-reporting2]
+
+SELECT  g.[Name] AS "Group Name",
+        u.[Last Name],
+        u.[First Name],
+        u.[Department],
+        u.[Username] AS "NetID",
+        u.[Proprietary ID] AS "Employee_ID",
+        idsch.[Name] AS "Author_ID_Scheme",
+        uia.[Identifier Value] AS "Author_ID"
+
+FROM    -- start with Groups
+        [dbo].[Group] AS g
+        -- get Users who are members of each group
+        JOIN [dbo].[Group User Membership] AS gu
+           ON gu.[Group ID] = g.[ID]
+        -- get each user's HR data
+        JOIN [dbo].[User] AS u
+            ON u.[ID] = gu.[User ID]
+        -- get each user's registered identifier data
+        JOIN [dbo].[User Identifier Association] AS uia
+            ON uia.[User ID] = u.[ID]
+        JOIN [dbo].[Identifier Scheme] AS idsch
+            ON idsch.ID = uia.[Identifier Scheme ID]
+WHERE   -- restrict to the group(s) of interest
+        g.[name] = 'Feinberg School of Medicine' AND idsch.[Name] = 'scopus-author-id'
+ORDER BY
+        "Group Name",
+        "Last Name",
+        "First Name"
 
 
 -- How do I find our if a paper with a specific DOI is in the database?
