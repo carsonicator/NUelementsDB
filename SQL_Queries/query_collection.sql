@@ -1,4 +1,5 @@
 -- How do I count the number of pending publications for a user?
+-- Modified from Karen's version
 
 SELECT [Computed Name Abbreviated], True_Department, True_School, count([Publication ID]) as Pending_Publications_Alt
 FROM
