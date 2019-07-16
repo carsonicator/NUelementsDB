@@ -1,3 +1,37 @@
+-- How do I count the number of pending publications for a user?
+
+SELECT [Computed Name Abbreviated], True_Department, True_School, count([Publication ID]) as Pending_Publications_Alt
+FROM
+  (
+    SELECT DISTINCT
+      a.[Publication ID],
+      a.[User ID] as User_ID,
+      b.[Publication ID] as [Alt Publication ID],
+      e.[User Record ID],
+      e.[Computed Name Abbreviated],
+      e.[Department],
+      left(e.[Department],  CHARINDEX(';', e.[Department])) as True_Department,
+      right(e.[Department], len(e.[Department]) - charindex(';', e.[Department]))  AS True_School,
+      e.[Email],
+      e.[Is Academic],
+      f.[ID] as F_ID,
+      f.[User ID]  as F_User_ID
+    FROM
+      [User Record] f
+      INNER JOIN [User] e
+      	ON e.[User Record ID] = f.[ID]
+      INNER JOIN [Pending Publication] a
+      	ON f.[User ID] = a.[User ID]
+      INNER JOIN [Publication Record] b
+      	ON a.[Publication ID] = b.[Publication ID]
+    WHERE f.[ID] = 'ID from User Record table'
+)
+z
+
+GROUP BY [Computed Name Abbreviated], True_Department, True_School
+ORDER BY [Computed Name Abbreviated], True_Department, True_School
+
+
 -- How do I get a list of all users in alphabetical order by last name?
 SELECT  u.[Last Name],
         u.[First Name],
