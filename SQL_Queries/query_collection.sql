@@ -1,3 +1,61 @@
+-- How do I find users who have secondary appointments in Feinberg?
+
+SELECT [ID]
+,[User Record ID]
+,[Username]
+,[Position]
+,[Title]
+,[First Name]
+,[Last Name]
+,[Initials]
+,[Computed Name Alphabetical]
+,[Email]
+,[Primary Group Descriptor]
+,[Is Academic]
+,[Is Current Staff]
+,[Is Local]
+,[Is Login Allowed]
+,[Department]
+,[Dept0]
+,[Dept1]
+,[Dept2]
+,[Dept3]
+,[Dept4]
+,[Dept5]
+,[Dept6]
+,[Dept7]
+,[Dept8]
+,[Dept9]
+,[DeptClass0]
+,[DeptClass1]
+,[DeptClass2]
+,[DeptClass3]
+,[DeptClass4]
+,[DeptClass5]
+,[DeptClass6]
+,[DeptClass7]
+,[DeptClass8]
+,[DeptClass9]
+,[DeptGroup0]
+,[DeptGroup1]
+,[DeptGroup2]
+,[DeptGroup3]
+,[DeptGroup4]
+,[DeptGroup5]
+,[DeptGroup6]
+,[DeptGroup7]
+,[DeptGroup8]
+,[DeptGroup9]
+  FROM [Elements-reporting2].[dbo].[User]
+  WHERE [Primary Group Descriptor] <> 'Feinberg School of Medicine' AND
+		([Dept1] like '%MED-%' OR [Dept2] like '%MED-%' OR [Dept3] like '%MED-%' OR [Dept4] like '%MED-%' OR [Dept5] like '%MED-%' OR [Dept6] like '%MED-%' OR [Dept7] like '%MED-%' OR [Dept8] like '%MED-%' OR [Dept9] like '%MED-%' OR
+    [Dept1] like '%Feinberg%' OR [Dept2] like '%Feinberg%' OR [Dept3] like '%Feinberg%' OR [Dept4] like '%Feinberg%' OR [Dept5] like '%Feinberg%' OR [Dept6] like '%Feinberg%' OR [Dept7] like '%Feinberg%' OR [Dept8] like '%Feinberg%' OR [Dept9] like '%Feinberg%' OR
+		[DeptClass1] like '%Feinberg%' OR [DeptClass2] like '%Feinberg%' OR [DeptClass3] like '%Feinberg%' OR [DeptClass4] like '%Feinberg%' OR [DeptClass5] like '%Feinberg%' OR [DeptClass6] like '%Feinberg%' OR [DeptClass7] like '%Feinberg%' OR [DeptClass8] like '%Feinberg%' OR [DeptClass9] like '%Feinberg%' OR
+		[DeptClass1] like '%MED-%' OR [DeptClass2] like '%MED-%' OR [DeptClass3] like '%MED-%' OR [DeptClass4] like '%MED-%' OR [DeptClass5] like '%MED-%' OR [DeptClass6] like '%MED-%' OR [DeptClass7] like '%MED-%' OR [DeptClass8] like '%MED-%' OR [DeptClass9] like '%MED-%' OR
+		[DeptGroup1] like '%Feinberg%' OR [DeptGroup2] like '%Feinberg%' OR [DeptGroup3] like '%Feinberg%' OR [DeptGroup4] like '%Feinberg%' OR [DeptGroup5] like '%Feinberg%' OR [DeptGroup6] like '%Feinberg%' OR [DeptGroup7] like '%Feinberg%' OR [DeptGroup8] like '%Feinberg%' OR [DeptGroup9] like '%Feinberg%' OR
+		[DeptGroup1] like '%MED-%' OR [DeptGroup2] like '%MED-%' OR [DeptGroup3] like '%MED-%' OR [DeptGroup4] like '%MED-%' OR [DeptGroup5] like '%MED-%' OR [DeptGroup6] like '%MED-%' OR [DeptGroup7] like '%MED-%' OR [DeptGroup8] like '%MED-%' OR [DeptGroup9] like '%MED-%')
+  ORDER BY [Last Name]
+
 -- How do I count the number of pending publications for a user?
 -- Modified from Karen's version
 
