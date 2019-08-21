@@ -161,6 +161,7 @@ FROM    -- start with Groups
         JOIN [dbo].[Identifier Scheme] AS idsch
             ON idsch.ID = uia.[Identifier Scheme ID]
 WHERE   -- restrict to the group(s) of interest
+        -- remove 'AND' clause to return all author identifiers (Scopus, ORCID, WOS)
         g.[name] = 'Feinberg School of Medicine' AND idsch.[Name] = 'scopus-author-id'
 ORDER BY
         "Group Name",
@@ -168,14 +169,7 @@ ORDER BY
         "First Name"
 
 
--- How do I find our if a paper with a specific DOI is in the database?
-use [Elements-reporting2]
-SELECT *
-FROM [dbo].[Publication Record] as pr
-WHERE pr.[doi] = 'doi_name_1' OR pr.[doi] = 'doi_name_2' OR ...
-
-
--- How do I return a list of all users in a group that have a [Scopus, ORCID, WOS] author ID?
+-- How do I return a list of all users in a group that have a [Scopus, ORCID, WOS] author ID? (Problematic, DON'T USE)
 use [Elements-reporting2]
 
 SELECT  DISTINCT g.[Name] AS "Group Name",
@@ -191,6 +185,7 @@ FROM    [dbo].[Group] AS g
         -- get Users who are members of each group
         JOIN [dbo].[Group User Membership] AS gu
             ON gu.[Group ID] = g.[ID]
+        -- joining these ids leaves out a small % of authors. Need to look into this.
         JOIN [dbo].[Publication User Relationship] AS pur
             ON pur.[User ID] = gu.[User ID]
         -- get each user's HR data
@@ -202,7 +197,7 @@ FROM    [dbo].[Group] AS g
         JOIN [dbo].[Identifier Scheme] AS idsch
             ON idsch.ID = uia.[Identifier Scheme ID]
 WHERE   -- restrict to the group(s) of interest
-        g.[name] = 'group_name' AND idsch.[Name] = 'scopus-author-id'
+        g.[name] = 'group_name'
 ORDER BY
         "Group Name",
         "Last Name",
@@ -212,7 +207,14 @@ ORDER BY
         "Employee_ID",
         "Author_ID_Scheme",
         "Author_ID"
-;
+
+
+-- How do I find our if a paper with a specific DOI is in the database?
+use [Elements-reporting2]
+
+SELECT *
+FROM [dbo].[Publication Record] as pr
+WHERE pr.[doi] = 'doi_name_1' OR pr.[doi] = 'doi_name_2' OR ...
 
 
 -- How do I get all publications within a date range for all members of a group?
