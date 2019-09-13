@@ -1,3 +1,28 @@
+-- How do I generate a list of researchers with aggregate counts of pending publications by type (conference and journal article)
+
+SELECT  u.[Computed Name Abbreviated],
+        u.[Position]
+        ,LEFT(u.[Department],  CHARINDEX(';', u.[Department])) "True Department"
+        ,RIGHT(u.[Department], LEN(u.[Department]) - CHARINDEX(';', u.[Department])) "True School"
+        ,p.[Type],
+        COUNT(p.ID) AS "Pending Publication Count"
+FROM    [User] u
+         -- Left joins mean we report on every user, even if they have no pending publications.
+         -- See https://docs.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql#join-type
+         LEFT JOIN [Pending Publication] pp ON pp.[User ID] = u.ID
+         LEFT JOIN [Publication] p ON p.ID = pp.[Publication ID]
+WHERE u.[Is Current Staff] = 1
+         AND u.[Is Academic] = 1
+GROUP BY [Computed Name Abbreviated]
+         ,[Position]
+         ,u.[Department]
+         ,p.[Type]
+ORDER BY [Computed Name Abbreviated]
+         ,[Position]
+         ,[True Department]
+         ,[True School]
+         ,p.[Type]
+
 -- How do I find users who have secondary appointments in Feinberg?
 
 SELECT [ID]
