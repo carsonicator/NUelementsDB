@@ -51,8 +51,3 @@ WHERE pr.[publication-date] > YYYYMMDD AND pr.[publication-date] <= YYYYMMDD AND
    OR pr.[publication-date] > YYYYMMDD AND pr.[publication-date] <= YYYYMMDD AND g.name = 'group_name_3'
 ORDER BY u.[Last Name]
 ```
-## Collection of Reporting DB Example Queries
-
-* Site: https://symplectic.figsh.com/
-* Username: gguest
-* Password: 159357456
