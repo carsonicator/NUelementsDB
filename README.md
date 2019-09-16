@@ -53,6 +53,6 @@ ORDER BY u.[Last Name]
 ```
 ## Collection of Reporting DB Example Queries
 
-https://symplectic.figsh.com/
-Username: gguest
-Password: 159357456
+* Site: https://symplectic.figsh.com/
+* Username: gguest
+* Password: 159357456
