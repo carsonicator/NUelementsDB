@@ -1,3 +1,17 @@
+-- How do I get a list of all publications for each user in a group along with all of their Author_IDs?
+
+SELECT g.[name] as "Group Name", u.[Last Name], u.[First Name], u.Username as "NetID", u.[Email], u.[Department], u.[Proprietary ID] as "Employee_ID", uia.[Identifier Value] as "Author ID", idsch.[Name] as "Author ID Scheme", pr.[Publication ID], pr.[authors], pr.[title], pr.[journal], pr.[publication-date], pr.[volume], pr.[issue], pr.[pagination Begin], pr.[pagination End], pr.[publication-status], pr.[types], pr.[external-identifiers], pr.[doi], pr.[Data Source Proprietary ID], pr.[Data Source]
+FROM [dbo].[Publication Record] as pr
+join [dbo].[Publication User Relationship] as pu on pr.[Publication ID] = pu.[Publication ID]
+join [dbo].[Group User Membership] as gu on gu.[User ID] = pu.[User ID]
+join [dbo].[User] as u on u.[ID] = pu.[User ID]
+join [dbo].[User Identifier Association] as uia on uia.[User ID] = u.[ID]
+join [dbo].[Identifier Scheme] as idsch on idsch.ID = uia.[Identifier Scheme ID]
+join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
+WHERE pr.[publication-date] > YYYYMMDD AND pr.[publication-date] <= YYYYMMDD AND g.name = 'group_name'
+ORDER BY u.[Last Name]
+
+
 -- How do I generate a list of researchers with aggregate counts of pending publications by type (conference and journal article)
 -- Modified by Ben Heartland at Symplectic
 
