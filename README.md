@@ -43,7 +43,7 @@ FROM [dbo].[Publication Record] as pr
 join [dbo].[Publication User Relationship] as pu on pr.[Publication ID] = pu.[Publication ID]
 join [dbo].[Group User Membership] as gu on gu.[User ID] = pu.[User ID]
 join [dbo].[User] as u on u.[ID] = pu.[User ID]
-join [dbo].[User Identifier Association] as uia on uia.[User ID] = u.[ID]
+join [dbo].[User Identifier] as ui on ui.[User ID] = u.[ID]
 join [dbo].[Identifier Scheme] as idsch on idsch.ID = uia.[Identifier Scheme ID]
 join [dbo].[Group] as g on g.[ID] = gu.[Group ID]
 WHERE pr.[publication-date] > YYYYMMDD AND pr.[publication-date] <= YYYYMMDD AND g.name = 'group_name_1'
